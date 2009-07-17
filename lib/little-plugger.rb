@@ -11,14 +11,46 @@ module LittlePlugger
 
   module ClassMethods
 
+    #
+    #
     def plugin( *names )
-      plugins.concat names
+      plugin_names.concat names
     end
 
+    #
+    #
+    def plugin_names
+      @plugin_names ||= []
+    end
+
+    #
+    #
     def plugins
-      @plugins ||= []
+      load_plugins
+      pm = plugin_module
+      names = pm.constants.map { |s| s.to_s }
+      names.reject! { |n| n =~ %r/^[A-Z_]+$/ }
+
+      h = {}
+      names.each do |name|
+        sym = ::LittlePlugger.underscore(name).to_sym
+        next unless plugin_names.empty? or plugin_names.include? sym
+        h[sym] = pm.const_get name
+      end
+      h
     end
 
+    #
+    #
+    def initialize_plugins
+      plugins.each do |name, klass|
+        msg = "initialize_#{name}"
+        klass.send msg if klass.respond_to? msg
+      end
+    end
+
+    #
+    #
     def load_plugins
       @loaded ||= {}
       found = {}
@@ -28,7 +60,7 @@ module LittlePlugger
       end
 
       :keep_on_truckin while found.map { |name, path|
-        next unless plugins.include? name
+        next unless plugin_names.empty? or plugin_names.include? name
         next if @loaded[name]
         begin
           @loaded[name] = load path
@@ -38,28 +70,8 @@ module LittlePlugger
       }.any?
     end
 
-    def activate_plugins
-      plugin_classes.each { |name, klass|
-        msg = "initialize_#{name}"
-        klass.send msg if klass.respond_to? msg
-      }
-    end
-
-    def plugin_classes
-      pm = plugin_module
-      names = pm.constants.map { |s| s.to_s }
-      names.reject! { |n| n =~ %r/^[A-Z_]+$/ }
-
-      h = {}
-      names.each { |name|
-        sym = ::LittlePlugger.underscore(name).to_sym
-        next unless plugins.include? sym
-        h[sym] = pm.const_get name
-      }
-      h
-    end
-    alias :plugin_modules :plugin_classes
-
+    #
+    #
     def plugin_path
       ::LittlePlugger.default_plugin_path(self)
     end
@@ -71,20 +83,38 @@ module LittlePlugger
   end  # module ClassMethods
 
   # :stopdoc:
+
+  # Called when another object extends itself with LittlePlugger.
+  #
   def self.extended( other )
     other.extend ClassMethods
   end
 
+  # Convert the given string from camel case to snake case.
+  #
+  #    underscore( "FooBar" )    #=> "foo_bar"
+  #
   def self.underscore( string )
     string.scan(%r/[A-Z]+(?:[^A-Z]+)?/).map { |s| s.downcase }.join('_')
   end
 
+  # For a given object returns a default plugin path. The path is
+  # created by splitting the object's class name on the namespace separator
+  # "::" and converting each part of the namespace into an underscored
+  # string (see the +underscore+ method). The strings are then joined using
+  # the File#join method to give a filesystem path. Appended to this path is
+  # the 'plugins' directory.
+  #
+  #    default_plugin_path( FooBar::Baz )    #=> "foo_bar/baz/plugins"
+  #
   def self.default_plugin_path( obj )
     obj = obj.class unless obj.is_a? Module
     ary = obj.name.split('::').map { |str| underscore str }
     File.join(ary, 'plugins')
   end
 
+  #
+  #
   def self.default_plugin_module( path )
     path.split(File::SEPARATOR).inject(Object) do |mod, const|
       const = const.split('_').map { |s| s.capitalize }.join
@@ -96,24 +126,29 @@ module LittlePlugger
 end  # module LittlePlugger
 
 
-def LittlePlugger( opts = {} )
-  return ::LittlePlugger::ClassMethods if opts.empty?
-  Module.new {
-    include ::LittlePlugger::ClassMethods
+module Kernel
 
-    if opts.key?(:path)
-      eval %Q{def plugin_path() #{opts[:path].to_s.inspect} end}
-    end
+  #
+  #
+  def LittlePlugger( opts = {} )
+    return ::LittlePlugger::ClassMethods if opts.empty?
+    Module.new {
+      include ::LittlePlugger::ClassMethods
 
-    if opts.key?(:module)
-      eval %Q{def plugin_module() #{opts[:module].name} end}
-    end
+      if opts.key?(:path)
+        eval %Q{def plugin_path() #{opts[:path].to_s.inspect} end}
+      end
 
-    if opts.key?(:plugins)
-      plugins = Array(opts[:plugins]).map {|val| val.to_sym.inspect}.join(',')
-      eval %Q{def plugins() @plugins ||= [#{plugins}] end}
-    end
-  }
-end
+      if opts.key?(:module)
+        eval %Q{def plugin_module() #{opts[:module].name} end}
+      end
+
+      if opts.key?(:plugins)
+        plugins = Array(opts[:plugins]).map {|val| val.to_sym.inspect}.join(',')
+        eval %Q{def plugin_names() @plugin_names ||= [#{plugins}] end}
+      end
+    }
+  end
+end  # module Kernel
 
 # EOF
