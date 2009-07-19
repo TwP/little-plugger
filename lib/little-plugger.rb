@@ -209,12 +209,18 @@ module LittlePlugger
     other.extend ClassMethods
   end
 
-  # Convert the given string from camel case to snake case.
+  # Convert the given string from camel case to snake case. Method liberally
+  # stolen from ActiveSupport.
   #
   #    underscore( "FooBar" )    #=> "foo_bar"
   #
   def self.underscore( string )
-    string.scan(%r/[A-Z]+(?:[^A-Z]+)?/).map { |s| s.downcase }.join('_')
+    string.to_s.
+        gsub(%r/::/, '/').
+        gsub(%r/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+        gsub(%r/([a-z\d])([A-Z])/,'\1_\2').
+        tr('-', '_').
+        downcase
   end
 
   # For a given object returns a default plugin path. The path is
@@ -228,8 +234,7 @@ module LittlePlugger
   #
   def self.default_plugin_path( obj )
     obj = obj.class unless obj.is_a? Module
-    ary = obj.name.split('::').map { |str| underscore str }
-    File.join(ary, 'plugins')
+    File.join(underscore(obj.name), 'plugins')
   end
 
   # For a given path returns the class or module corresponding to the
@@ -254,7 +259,7 @@ end  # module LittlePlugger
 
 module Kernel
 
-  #
+  # TODO: document method
   #
   def LittlePlugger( opts = {} )
     return ::LittlePlugger::ClassMethods if opts.empty?
