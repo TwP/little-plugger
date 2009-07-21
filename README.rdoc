@@ -10,17 +10,17 @@ manage the loading and initializing of plugins provided by other gems.
 
 === FEATURES:
 
-default plugin list
-plugin path
-plugin module
+* List of plugins so that some plugins can be excluded while others are
+  loaded by default.
+* Loading and initializing of plugins.
+* Access to the plugin classes and modules.
 
-loading / initializing
-listing plugins
-
+LittlePlugger is a distallation of the plugin system from Hoe. It has been
+"genericized" and encapsulated into its own easy to use module.
 
 === REQUIREMENTS:
 
-Since Little Plugger is a gem-based plugin system, Ruby Gems must be
+Since Little Plugger is a Gem based plugin system, Ruby Gems must be
 installed on your system.
 
 === INSTALL:
