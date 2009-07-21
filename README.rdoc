@@ -1,32 +1,37 @@
-little-plugger
-    by FIXME (your name)
-    FIXME (url)
+= Little Plugger
+* by Tim Pease
+* http://github.com/TwP/little-plugger/tree/master
 
-== DESCRIPTION:
+=== DESCRIPTION:
 
-FIXME (describe your package)
+LittlePlugger is a module that provides Gem based plugin management.
+By extending your own class or module with LittlePlugger you can easily
+manage the loading and initializing of plugins provided by other gems.
 
-== FEATURES/PROBLEMS:
+=== FEATURES:
 
-* FIXME (list of features or problems)
+default plugin list
+plugin path
+plugin module
 
-== SYNOPSIS:
+loading / initializing
+listing plugins
 
-  FIXME (code sample of usage)
 
-== REQUIREMENTS:
+=== REQUIREMENTS:
 
-* FIXME (list of requirements)
+Since Little Plugger is a gem-based plugin system, Ruby Gems must be
+installed on your system.
 
-== INSTALL:
+=== INSTALL:
 
-* FIXME (sudo gem install, anything else)
+  gem install little-plugger
 
-== LICENSE:
+=== LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2008 FIXME (different license?)
+Copyright (c) 2009
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

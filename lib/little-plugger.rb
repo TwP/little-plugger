@@ -259,8 +259,28 @@ end  # module LittlePlugger
 
 module Kernel
 
-  # TODO: document method
+  # call-seq:
+  #    LittlePlugger( opts = {} )
   #
+  # This method allows the user to override some of LittlePlugger's default
+  # settings when mixed into a module or class.
+  #
+  # See the "Customizing" section of the LittlePlugger documentation for an
+  # example of how this method is used.
+  #
+  # ==== Options
+  #
+  # * :path <String>
+  #    The default plugin path. Defaults to "module_name/plugins".
+  #
+  # * :module <Module>
+  #    The module where plugins will be loaded. Defaults to
+  #    ModuleName::Plugins.
+  #
+  # * :plugins <Array>
+  #    The array of default plugins to load. Only the plugins listed in this
+  #    array will be loaded by LittlePlugger.
+  # 
   def LittlePlugger( opts = {} )
     return ::LittlePlugger::ClassMethods if opts.empty?
     Module.new {
