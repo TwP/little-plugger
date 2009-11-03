@@ -110,7 +110,7 @@
 #
 module LittlePlugger
 
-  VERSION = '1.0.1'  # :nodoc:
+  VERSION = '1.1.0'  # :nodoc:
 
   # Returns the version string for the library.
   #
@@ -173,7 +173,8 @@ module LittlePlugger
       found = {}
 
       Gem.find_files(File.join(plugin_path, '*.rb')).each do |path|
-        found[File.basename(path, '.rb').to_sym] = path
+        name = File.basename(path, '.rb').to_sym
+        found[name] = path unless found.key? name
       end
 
       :keep_on_truckin while found.map { |name, path|
