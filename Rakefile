@@ -10,6 +10,7 @@ require 'little-plugger'
 
 task :default => 'spec:specdoc'
 
+Bones.disregard_plugin :rubyforge
 Bones {
   name 'little-plugger'
   authors 'Tim Pease'
@@ -26,6 +27,7 @@ Bones {
   enable_sudo
 
   depend_on 'rspec', :development => true
+  depend_on 'bones-extras', :development => true
 }
 
 # EOF

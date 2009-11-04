@@ -126,6 +126,21 @@ module LittlePlugger
       plugin_names.concat(names.map! {|n| n.to_sym})
     end
 
+    # Add the _names_ to the list of plugins that will *not* be loaded. This
+    # list prevents the plugin system from loading unwanted or unneeded
+    # plugins.
+    #
+    # If a plugin name appears in both the 'disregard_plugin' list and the
+    # 'plugin' list, the disregard list takes precedence; that is, the plugin
+    # will not be loaded.
+    #
+    def disregard_plugin( *names )
+      @disregard_plugin ||= []
+      @disregard_plugin.concat(names.map! {|n| n.to_sym})
+      @disregard_plugin
+    end
+    alias :disregard_plugins :disregard_plugin
+
     # Returns the array of plugin names that will be loaded. If the array is
     # empty, then any plugin found in the +plugin_path+ will be loaded.
     #
@@ -146,6 +161,7 @@ module LittlePlugger
       names.each do |name|
         sym = ::LittlePlugger.underscore(name).to_sym
         next unless plugin_names.empty? or plugin_names.include? sym
+        next if disregard_plugins.include? sym
         h[sym] = pm.const_get name
       end
       h
@@ -179,6 +195,7 @@ module LittlePlugger
 
       :keep_on_truckin while found.map { |name, path|
         next unless plugin_names.empty? or plugin_names.include? name
+        next if disregard_plugins.include? name
         next if @loaded[name]
         begin
           @loaded[name] = load path

@@ -1,7 +1,8 @@
-== 1.1.0 / 2009-11-03
+== 1.1.0 / 2009-11-04
 
-* 1 minor enhancement
+* 2 minor enhancements
   * Loading the first plugin found by name (instead of the last)
+  * Plugins can be disregarded so they will not be loaded
 
 == 1.0.1 / 2009-08-14
 
