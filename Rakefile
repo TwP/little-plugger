@@ -2,13 +2,14 @@
 begin
   require 'bones'
 rescue LoadError
-  raise RuntimeError, '### please install the "bones" gem ###'
+  abort '### please install the "bones" gem ###'
 end
 
 ensure_in_path 'lib'
 require 'little-plugger'
 
 task :default => 'spec:specdoc'
+task 'gem:release' => 'spec:run'
 
 Bones.disregard_plugin :rubyforge
 Bones {
@@ -17,7 +18,6 @@ Bones {
   email 'tim.pease@gmail.com'
   url 'http://gemcutter.org/gems/little-plugger'
   version LittlePlugger::VERSION
-  exclude << 'little-plugger.gemspec'
   readme_file 'README.rdoc'
   ignore_file '.gitignore'
 
@@ -27,6 +27,7 @@ Bones {
   enable_sudo
 
   depend_on 'rspec', :development => true
+  depend_on 'bones-git', :development => true
   depend_on 'bones-extras', :development => true
 }
 

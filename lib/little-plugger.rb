@@ -110,7 +110,7 @@
 #
 module LittlePlugger
 
-  VERSION = '1.1.0'  # :nodoc:
+  VERSION = '1.1.1'  # :nodoc:
 
   # Returns the version string for the library.
   #
@@ -199,7 +199,7 @@ module LittlePlugger
         next if @loaded[name]
         begin
           @loaded[name] = load path
-        rescue LoadError => err
+        rescue ScriptError, StandardError => err
           warn "Error loading #{path.inspect}: #{err.message}. skipping..."
         end
       }.any?
