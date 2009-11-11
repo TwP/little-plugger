@@ -11,7 +11,6 @@ require 'little-plugger'
 task :default => 'spec:specdoc'
 task 'gem:release' => 'spec:run'
 
-Bones.disregard_plugin :rubyforge
 Bones {
   name 'little-plugger'
   authors 'Tim Pease'
@@ -20,6 +19,7 @@ Bones {
   version LittlePlugger::VERSION
   readme_file 'README.rdoc'
   ignore_file '.gitignore'
+  rubyforge.name 'codeforpeople'
 
   spec.opts << '--color'
 
