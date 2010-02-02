@@ -20,15 +20,13 @@ Bones {
   readme_file 'README.rdoc'
   ignore_file '.gitignore'
   rubyforge.name 'codeforpeople'
-
   spec.opts << '--color'
-
   use_gmail
-  enable_sudo
 
   depend_on 'rspec', :development => true
-  depend_on 'bones-git', :development => true
-  depend_on 'bones-extras', :development => true
 }
 
-# EOF
+# depending on bones (even as a development dependency) creates a circular
+# reference that prevents the auto install of little-plugger when instsalling
+# bones
+::Bones.config.gem._spec.dependencies.delete_if {|d| d.name == 'bones'}

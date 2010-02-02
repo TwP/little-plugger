@@ -110,7 +110,7 @@
 #
 module LittlePlugger
 
-  VERSION = '1.1.1'  # :nodoc:
+  VERSION = '1.1.2'  # :nodoc:
 
   # Returns the version string for the library.
   #

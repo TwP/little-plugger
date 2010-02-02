@@ -1,3 +1,8 @@
+== 1.1.2 / 2010-02-01
+
+* 1 bug fix
+  * Resovling some circular dependencies
+
 == 1.1.1 / 2009-11-08
 
 * 1 bug fix
