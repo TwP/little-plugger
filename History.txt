@@ -1,3 +1,8 @@
+== 1.1.3 / 2011-11-17
+
+* 1 bug fix
+  * Ensuring gem files are in a sorted order
+
 == 1.1.2 / 2010-02-01
 
 * 1 bug fix
