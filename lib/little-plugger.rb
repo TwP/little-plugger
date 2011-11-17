@@ -188,7 +188,7 @@ module LittlePlugger
       @loaded ||= {}
       found = {}
 
-      Gem.find_files(File.join(plugin_path, '*.rb')).each do |path|
+      Gem.find_files(File.join(plugin_path, '*.rb')).sort!.reverse_each do |path|
         name = File.basename(path, '.rb').to_sym
         found[name] = path unless found.key? name
       end
