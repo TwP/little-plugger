@@ -8,7 +8,7 @@ end
 ensure_in_path 'lib'
 require 'little-plugger'
 
-task :default => 'spec:specdoc'
+task :default => 'spec:run'
 task 'gem:release' => 'spec:run'
 
 Bones {
@@ -18,9 +18,8 @@ Bones {
   url 'http://gemcutter.org/gems/little-plugger'
   version LittlePlugger::VERSION
   readme_file 'README.rdoc'
-  ignore_file '.gitignore'
-  rubyforge.name 'codeforpeople'
-  spec.opts << '--color'
+
+  spec.opts.concat %w[--color --format documentation]
   use_gmail
 
   depend_on 'rspec', :development => true
