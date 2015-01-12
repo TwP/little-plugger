@@ -1,4 +1,3 @@
-
 require File.join(File.dirname(__FILE__), %w[spec_helper])
 
 describe LittlePlugger do
@@ -18,7 +17,7 @@ describe LittlePlugger do
   it "generates a default plugin module" do
     LittlePlugger.default_plugin_module('little_plugger').should be == LittlePlugger
     lambda {LittlePlugger.default_plugin_module('little_plugger/plugins')}.
-        should raise_error(NameError, 'uninitialized constant LittlePlugger::Plugins')
+        should raise_error(NameError, /uninitialized constant (LittlePlugger::)?Plugins/)
     LittlePlugger.default_plugin_module('process/status').should be == Process::Status
   end
 end
