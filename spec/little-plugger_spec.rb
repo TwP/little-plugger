@@ -3,22 +3,22 @@ require File.join(File.dirname(__FILE__), %w[spec_helper])
 describe LittlePlugger do
 
   it "converts a string from camel-case to underscore" do
-    LittlePlugger.underscore('FooBarBaz').should be == 'foo_bar_baz'
-    LittlePlugger.underscore('CouchDB').should be == 'couch_db'
-    LittlePlugger.underscore('FOOBar').should be == 'foo_bar'
-    LittlePlugger.underscore('Foo::Bar::BazBuz').should be == 'foo/bar/baz_buz'
+    expect(LittlePlugger.underscore('FooBarBaz')).to eq('foo_bar_baz')
+    expect(LittlePlugger.underscore('CouchDB')).to eq('couch_db')
+    expect(LittlePlugger.underscore('FOOBar')).to eq('foo_bar')
+    expect(LittlePlugger.underscore('Foo::Bar::BazBuz')).to eq('foo/bar/baz_buz')
   end
 
   it "generates a default plugin path" do
-    LittlePlugger.default_plugin_path(LittlePlugger).should be == 'little_plugger/plugins'
-    LittlePlugger.default_plugin_path(Process::Status).should be == 'process/status/plugins'
+    expect(LittlePlugger.default_plugin_path(LittlePlugger)).to eq('little_plugger/plugins')
+    expect(LittlePlugger.default_plugin_path(Process::Status)).to eq('process/status/plugins')
   end
 
   it "generates a default plugin module" do
-    LittlePlugger.default_plugin_module('little_plugger').should be == LittlePlugger
-    lambda {LittlePlugger.default_plugin_module('little_plugger/plugins')}.
-        should raise_error(NameError, /uninitialized constant (LittlePlugger::)?Plugins/)
-    LittlePlugger.default_plugin_module('process/status').should be == Process::Status
+    expect(LittlePlugger.default_plugin_module('little_plugger')).to eq(LittlePlugger)
+    expect {LittlePlugger.default_plugin_module('little_plugger/plugins')}.to \
+        raise_error(NameError, /uninitialized constant (LittlePlugger::)?Plugins/)
+    expect(LittlePlugger.default_plugin_module('process/status')).to eq(Process::Status)
   end
 end
 
