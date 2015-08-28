@@ -1,12 +1,11 @@
+$:.unshift 'lib'
+require 'little-plugger'
 
 begin
   require 'bones'
 rescue LoadError
   abort '### please install the "bones" gem ###'
 end
-
-ensure_in_path 'lib'
-require 'little-plugger'
 
 task :default => 'spec:run'
 task 'gem:release' => 'spec:run'
