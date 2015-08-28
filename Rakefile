@@ -22,7 +22,7 @@ Bones {
   spec.opts.concat %w[--color --format documentation]
   use_gmail
 
-  depend_on 'rspec', :development => true
+  depend_on 'rspec', '~> 3.3', :development => true
 }
 
 # depending on bones (even as a development dependency) creates a circular
