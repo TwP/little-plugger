@@ -13,6 +13,7 @@ task 'gem:release' => 'spec:run'
 Bones {
   name 'little-plugger'
   authors 'Tim Pease'
+  license 'MIT'
   email 'tim.pease@gmail.com'
   url 'http://gemcutter.org/gems/little-plugger'
   version LittlePlugger::VERSION
