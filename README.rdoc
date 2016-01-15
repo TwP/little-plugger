@@ -15,7 +15,7 @@ manage the loading and initializing of plugins provided by other gems.
 * Loading and initializing of plugins.
 * Access to the plugin classes and modules.
 
-LittlePlugger is a distallation of the plugin system from Hoe. It has been
+LittlePlugger is a distillation of the plugin system from Hoe. It has been
 "genericized" and encapsulated into its own easy to use module.
 
 === REQUIREMENTS:
