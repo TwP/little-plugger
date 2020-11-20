@@ -41,7 +41,7 @@
 # === Initializing
 # Optionally, plugins can provide an initialization method for running any
 # setup code needed by the plugin. This initialize method should be named as
-# follows: "initializer_#{plugin_name}" where the name of the plugin is
+# follows: "initialize_#{plugin_name}" where the name of the plugin is
 # appended to the end of the initializer method name.
 #
 # If this method exists, it will be called automatically when plugins are
